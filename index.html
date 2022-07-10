@@ -2,17 +2,85 @@
 <html>
 <head>
 <script>
-function myFunction() {
-  document.getElementById("demo").innerHTML = "Paragraph changed.";
+
+const unstresed = ["el", "em", "en", "er", "erd", "ier"];
+const apo = ["a", "o", "u"];
+
+const longVowles = ["oo", "uu", "ee", "aa", "ie"];
+const shortVowles = ["o", "u", "e", "a", "i"];
+const consonante = ["b", "c", "d", "f", "g", "h", "j", "k", "l", "m", "n", "p", "q", "r", "s", "t", "v", "w", "x", "y", "z"];
+
+//Single vowels that are followed by ch but not within the same syllable (in the following one) are also considered short vowels. This is a nasty little exception hardly worth mentioning, since so few words face it. Nonetheless it must be mentioned. 
+
+function getVal() {
+  const val = document.querySelector('input').value;
+
+  //el em en er erd ier
+  for (index = 0; index < unstresed.length; index++) {
+    if (val == "keel")
+      break ;
+    if (val.endsWith(unstresed[index])) {
+      //oo uu ee aa ie
+      for (i = 0; longVowles.length > i; i++) {
+        if (val.includes(longVowles[i])) {
+          const longVowelPos = val.lastIndexOf(longVowles[i]) + 2;
+          //console.log(longVowelPos + " " +  val + " " + val[longVowelPos]);
+          //consonante
+          for (i2 = 0; consonante.length > i2; i2++) {
+            if (val[longVowelPos] == consonante[i2]) {
+              const done = val.substr(0, longVowelPos - 1) + val.substr(longVowelPos, val.length) + "s";
+              console.log(done)
+              return
+            }
+          }
+        }
+      }
+      for (i = 0; shortVowles.length > i; i++) {
+        if (val.includes(shortVowles[i])) {
+          const longVowelPos = val.lastIndexOf(shortVowles[i]) + 1;
+          //console.log(longVowelPos + " " +  val + " " + val[longVowelPos]);
+          //consonante
+          for (i2 = 0; consonante.length > i2; i2++) {
+            if (val[longVowelPos] == consonante[i2]) {
+              const done = val.substr(0, longVowelPos) + consonante[i2] + consonante[i2] + val.substr(longVowelPos + 2, val.length) + "s";
+              console.log(done)
+              return
+            }
+          }
+        }
+      }
+    }
+  }
+  for (index = 0; index < apo.length; index++) {
+    if (val.endsWith(apo[index])) {
+      console.log(val+ "`s");
+      return
+    }
+  }
+  for (i = 0; longVowles.length > i; i++) {
+    if (val.includes(longVowles[i])) {
+      for (i2 = 0; consonante.length > i2; i2++) {
+        const longVowelPos = val.lastIndexOf(longVowles[i]) + 2;
+        if (val[longVowelPos] == consonante[i2]) {
+          const done = val.substr(0, longVowelPos - 1) + val.substr(longVowelPos, val.length) + "en";
+          console.log(done)
+          return
+        }
+      }  
+    }
+  }
 }
+
 </script>
 </head>
 <body>
 
-<h2>Demo JavaScript in Head</h2>
+<h1>enkelvoud -> meervoud</h1>
 
-<p id="demo">A Paragraph</p>
-<button type="button" onclick="myFunction()">Try it</button>
+<form>
+ <label for="fname">noun</label><br>
+ <input type="text" placeholder="Enter text" onblur="getVal()">
+</form> 
 
 </body>
 </html>
